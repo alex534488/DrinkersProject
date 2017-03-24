@@ -1,5 +1,6 @@
 package com.prototype.drinkers.drinkers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * Created by Alexandre on 2017-03-24.
  */
 
-public class Commande {
+public class Commande implements Serializable {
 
     public String barName;
     public Date date;
@@ -17,10 +18,9 @@ public class Commande {
     public Commande(String barName, Date date, List<Drink> commands){
         this.barName = barName;
         this.date = date;
-        this.commands = commands;
-    }
-
-    public void AddCommand(Drink drink){
-        commands.add(drink);
+        if(commands != null)
+            this.commands = commands;
+        else
+            this.commands = new ArrayList<Drink>();
     }
 }

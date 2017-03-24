@@ -15,12 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public BarMenu barMenu;
+    public ClientAccount account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,13 @@ public class MainActivity extends AppCompatActivity
         String barName = "Bar UQAC";
         List<Drink> menuList = Arrays.asList(new Drink("Biere",5),new Drink("Rhum N Coke",7), new Drink("Gin Tonic",8), new Drink("Martini", 10));
 
-        barMenu = new BarMenu(barName,menuList);
+        // Creation du compte client
+        BarMenu barMenu = new BarMenu(barName,menuList);
+        account = new ClientAccount(barMenu);
+
+        // Ajout de commandes
+        account.CreateBill(new Commande(account.selectedBar.barName,new Date(),null));
+        account.historiqueBill.get(0).commands.add(account.selectedBar.GetDrinkByName("Biere"));
     }
 
     @Override
@@ -103,15 +110,15 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setTitle("Bar Location");
         } else if (id == R.id.nav_menu) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment fragment = CommandeFragment.newInstance(barMenu);
+            Fragment fragment = CommandeFragment.newInstance(account);
             ft.replace(R.id.content_frame,fragment);
             ft.commit();
             getSupportActionBar().setTitle("Menu");
         } else if (id == R.id.nav_history) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new HistoryFragment())
-                    .commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            Fragment fragment = HistoryFragment.newInstance(account);
+            ft.replace(R.id.content_frame,fragment);
+            ft.commit();
             getSupportActionBar().setTitle("Command History");
         } else if (id == R.id.nav_settings) {
             fragmentManager.beginTransaction()

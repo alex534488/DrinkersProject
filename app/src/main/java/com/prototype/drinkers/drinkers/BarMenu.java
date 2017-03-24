@@ -21,5 +21,11 @@ public class BarMenu implements Serializable {
         this.drinks = drinks;
     }
 
-
+    public Drink GetDrinkByName(String name){
+        for (int i = 0; i < drinks.size(); i++){
+            if(drinks.get(i).drinkName == name)
+                return drinks.get(i);
+        }
+        return null;
+    }
 }
