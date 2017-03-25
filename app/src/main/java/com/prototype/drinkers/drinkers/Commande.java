@@ -22,5 +22,6 @@ public class Commande implements Serializable {
             this.commands = commands;
         else
             this.commands = new ArrayList<Drink>();
+        //test
     }
 }
